@@ -10,10 +10,10 @@ Kullanıcıların Papara'nın güvenli API'si aracılığıyla ödeme yapmasına
 ## Ekran Görüntüleri
 
 ### 1. Modül Yapılandırma Ekranı
-<img src="https://raw.githubusercontent.com/OmerAti/wisecp-papara/main/images/papara1.png" alt="Yapılandırma Ekranı" width="100" height="100">
+<img src="https://raw.githubusercontent.com/OmerAti/wisecp-papara/main/images/papara1.png" alt="Yapılandırma Ekranı">
 
 ### 2. Ödeme Sayfası
-<img src="https://raw.githubusercontent.com/OmerAti/wisecp-papara/main/images/papara2.png" alt="Ödeme Sayfası" width="100" height="100">
+<img src="https://raw.githubusercontent.com/OmerAti/wisecp-papara/main/images/papara2.png" alt="Ödeme Sayfası">
 
 
 ## Özellikler
