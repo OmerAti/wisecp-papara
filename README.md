@@ -1,5 +1,5 @@
 <div style="text-align: center;">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/d/dd/Papara_Logo.png" alt="Ödeme Sayfası" width="100" height="100">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/d/dd/Papara_Logo.png" alt="Ödeme Sayfası" width="150px" height="150px">
 </div>
 
 # WiseCP İçin Papara Ödeme Modülü
