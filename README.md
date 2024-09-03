@@ -30,9 +30,6 @@ Kullanıcıların Papara'nın güvenli API'si aracılığıyla ödeme yapmasına
    - 
 ## Kullanım
    -  Modül kurulduktan ve yapılandırıldıktan sonra:
-
-c
-
    -  Müşteriler, ödeme sayfasında Papara'yı bir ödeme seçeneği olarak görecekler.
    -  Seçtiklerinde, ödeme bilgilerini girmeleri istenecektir.
    -  İşlem Yönetimi:
