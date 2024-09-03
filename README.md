@@ -7,7 +7,13 @@
 Bu modül, Papara Ödeme Ağ Geçidi'ni WiseCP platformuna entegre eder. 
 Kullanıcıların Papara'nın güvenli API'si aracılığıyla ödeme yapmasına olanak tanır. Modül, temel ödeme işlemleri, komisyon hesaplamaları, ve otomatik çağrı geri döndürme gibi özellikler sunar.
 
-## Ekran Görüntüsü
+## Ekran Görüntüleri
+
+### 1. Modül Yapılandırma Ekranı
+<img src="https://raw.githubusercontent.com/OmerAti/wisecp-papara/main/images/papara1.png" alt="Yapılandırma Ekranı" width="100" height="100">
+
+### 2. Ödeme Sayfası
+<img src="https://raw.githubusercontent.com/OmerAti/wisecp-papara/main/images/papara2.png" alt="Ödeme Sayfası" width="100" height="100">
 
 
 ## Özellikler
