@@ -64,12 +64,12 @@
 
         public function capture($params=[])
         {
-		 $amount = number_format($params['amount'], 2, '.', '');
 			if($checkout_data["currency"] == 4) $currency = 1;
             elseif($checkout_data["currency"] == 5) $currency = 2;
             else $currency = 0;
 			$ip = $this->get_ip();
             $api_key            = $this->config["settings"]["Papara_api_key"] ?? 'N/A';
+            $amount = number_format($params['amount'], 2, '.', '');
             $fields             = [
 			   'OrderId'                => $params["checkout_id"],
        	'Amount'           => $amount,  
@@ -105,6 +105,13 @@
             'message' => curl_error($curl)
         ];
     }
+      if (strpos($result, '<html') !== false) {
+        return [
+            'status' => 'error',
+            'message' => 'API yanıtı HTML formatında geldi, 401 Yetkilendirme Hatası Sanal Post Kapalı Papara Başvurun.',
+            'raw_result' => $result,
+        ];
+    }  
     $result = json_decode($result, true);
 
     if (json_last_error() !== JSON_ERROR_NONE) {
