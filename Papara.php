@@ -64,6 +64,7 @@
 
         public function capture($params=[])
         {
+		 $amount = number_format($params['amount'], 2, '.', '');
 			if($checkout_data["currency"] == 4) $currency = 1;
             elseif($checkout_data["currency"] == 5) $currency = 2;
             else $currency = 0;
@@ -71,8 +72,8 @@
             $api_key            = $this->config["settings"]["Papara_api_key"] ?? 'N/A';
             $fields             = [
 			   'OrderId'                => $params["checkout_id"],
-			   'Amount'                => $params['amount'],
-			   'FinalAmount'                => $params['amount'],
+       	'Amount'           => $amount,  
+        'FinalAmount'      => $amount,  
 			   'Currency'              => $this->currency($params['currency']),
 			   'Installment'              => 1,
                 'CardNumber'        => $params['num'],
