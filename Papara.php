@@ -67,26 +67,29 @@
 			if($checkout_data["currency"] == 4) $currency = 1;
             elseif($checkout_data["currency"] == 5) $currency = 2;
             else $currency = 0;
-			$ip = $this->get_ip();
+	    $callback_url           = Controllers::$init->CRLink("payment", ['Papara', $this->get_auth_token(), 'callback']);
+	    $ip = $this->get_ip();
             $api_key            = $this->config["settings"]["Papara_api_key"] ?? 'N/A';
             $amount = number_format($params['amount'], 2, '.', '');
             $fields             = [
-			   'OrderId'                => $params["checkout_id"],
+	'OrderId'          => $params["checkout_id"] . '_'. mt_rand(100000, 999999),
        	'Amount'           => $amount,  
         'FinalAmount'      => $amount,  
-			   'Currency'              => $this->currency($params['currency']),
-			   'Installment'              => 1,
-                'CardNumber'        => $params['num'],
-				'ExpireYear'        => '20' . $params['expiry_y'],
-				'ExpireMonth'        => $params['expiry_m'],
-				'Cvv'           => $params['cvc'],
-                'CardHolderName'   => $params['holder_name'],
-				'CustomerName'   => $params["clientInfo"]->name . ' ' . $params["clientInfo"]->surname,
-				'ClientIP'   => $ip,
+	'Currency'              => $this->currency($params['currency']),
+	'Installment'              => 1,
+        'CardNumber'        => $params['num'],
+	'ExpireYear'        => '20' . $params['expiry_y'],
+	'ExpireMonth'        => $params['expiry_m'],
+	'Cvv'           => $params['cvc'],
+        'CardHolderName'   => $params['holder_name'],
+	'CustomerName'   => $params["clientInfo"]->name . ' ' . $params["clientInfo"]->surname,
+	'ClientIP'   => $ip,
+	'CallbackUrl' =>  $callback_url,
             ];
 
+    
         $host = parse_url($this->config["settings"]["Papara_api_url"],  PHP_URL_HOST);
-        $api_url = "https://{$host}/v1/vpos/sale";
+        $api_url = "https://{$host}/v1/vpos/3dsecure";
             $curl = curl_init();
             curl_setopt($curl, CURLOPT_URL, $api_url);
             curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
@@ -105,13 +108,6 @@
             'message' => curl_error($curl)
         ];
     }
-      if (strpos($result, '<html') !== false) {
-        return [
-            'status' => 'error',
-            'message' => 'API yanıtı HTML formatında geldi, 401 Yetkilendirme Hatası Sanal Post Kapalı Papara Başvurun.',
-            'raw_result' => $result,
-        ];
-    }  
     $result = json_decode($result, true);
 
     if (json_last_error() !== JSON_ERROR_NONE) {
@@ -136,13 +132,39 @@
 
     if ($result && isset($result['succeeded']) && $result['succeeded'] === true) {
         return [
-            'status' => 'successful',
-            'message' => ['Merchant Transaction ID' => $result['transaction_id']],
+            'status' => 'redirect',
+            'output' => "<iframe srcdoc='" . htmlspecialchars($result['data']) . "' width='100%' height='500' frameborder='0'></iframe>",
         ];
     } else {
         return [
             'status' => 'error',
             'message' => $result['error']['message'] ?? '!API ERROR!',
+        ];
+    }
+}
+public function callback()
+{
+
+    $result_code = Filter::init("POST/ResultCode", "string");
+    $result_message = Filter::init("POST/ResultMessage", "string");
+
+    if ($result_code === '7299') {
+        return [
+            'status' => 'failed',
+            'message' => $result_message, 
+            'callback_message' => 'Banka tarafında hata almıştır, bilgi için bankanızı arayın',
+        ];
+    }
+
+    $customer_id = Filter::init("POST/CustomerId", "string");
+    if (!$customer_id) {
+        $this->error = 'Customer ID not found.';
+        return false;
+    }
+    if ($result['succeeded'] === true) {
+        return [
+            'status' => 'successful',
+            'message' => ['Merchant Transaction ID' => $result['transaction_id']],
         ];
     }
 }
