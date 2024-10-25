@@ -144,29 +144,66 @@
 }
 public function callback()
 {
-
+    $post = $_POST;
     $result_code = Filter::init("POST/ResultCode", "string");
     $result_message = Filter::init("POST/ResultMessage", "string");
-
-    if ($result_code === '7299') {
+    $error_messages = [
+        '7000' => 'Girilen bilgi(ler)de format hatası bulunmaktadır.',
+        '7001' => 'Üye işyeri pos tanımlarında eksik/hata bulunmaktadır.',
+        '7002' => 'Üye işyeri tanımlarında eksik/hata bulunmaktadır.',
+        '7003' => 'Geçersiz para birimi.',
+        '7004' => 'İşlem bulunamamıştır.',
+        '7005' => 'İptal/İade edilmek istenen işlem bulunamamıştır.',
+        '7006' => 'İşlem daha önce iade edilmiştir.',
+        '7007' => 'İade işlemi için geçersiz tutar girilmiştir.',
+        '7008' => 'İşlem iade edilemez.',
+        '7009' => 'İşlem iptal edilemez.',
+        '7010' => 'Sipariş numarası (OrderId) daha önce kullanılmıştır.',
+        '7034' => 'İşlem Tamamlanamaz.',
+        '7035' => 'İşlem Tamamlanamaz.',
+        '7036' => '3D işlemi daha önce tamamlanmış.',
+        '1999' => 'Teknik bir hata oluşmuştur ve ilgili ekiplerimize bilgi verilmiştir.',
+        '7200' => 'İşlem banka tarafından onaylanmamıştır, bilgi için bankanızı arayın.',
+        '7201' => 'Kart bilgileri geçersizdir.',
+        '7202' => 'Kartın geçerlilik süresi dolmuştur.',
+        '7203' => 'Hatalı pin (doğrulama kodu) girilmiştir.',
+        '7204' => 'Kartın bakiyesi/limiti yetersiz.',
+        '7205' => 'Kayıp kart kullanılmıştır, kartı imha edin.',
+        '7206' => 'Çalıntı kart kullanılmıştır, kartı imha edin.',
+        '7207' => 'Kart internet ödemelerine kapalıdır.',
+        '7299' => 'İşlem banka tarafında hata almıştır, bilgi için bankanızı arayın.',
+    ];
+    if (array_key_exists($result_code, $error_messages)) {
         return [
-            'status' => 'failed',
-            'message' => $result_message, 
-            'callback_message' => 'Banka tarafında hata almıştır, bilgi için bankanızı arayın',
+            'status' => 'error',
+            'message' => $result_message,
+            'callback_message' => $error_messages[$result_code],
         ];
     }
-
     $customer_id = Filter::init("POST/CustomerId", "string");
     if (!$customer_id) {
         $this->error = 'Customer ID not found.';
         return false;
     }
-    if ($result['succeeded'] === true) {
-        return [
-            'status' => 'successful',
-            'message' => ['Merchant Transaction ID' => $result['transaction_id']],
-        ];
-    }
+
+
+    return [
+        'status' => 'error',
+        'message' => $result_message,
+        'callback_message' => 'Bilinmeyen bir hata oluştu.',
+    ];
+           if( $post['status'] == 'success' ) {
+                return [
+                    'status' => 'successful',
+                    'message' => $post,
+                    'callback_message' => 'Ödeme Tamamlandı',
+                    'paid' => [
+                        'amount' => $amount,
+                        'currency' => $amount,
+                    ],
+                ];
+           }
 }
+
 
     }
