@@ -3,7 +3,7 @@
  * Papara - Wisecp Papara Ödeme Yöntemi
  *
  * Yazar: Ömer ATABER - OmerAti JRodix.Com Internet Hizmetleri
- * Versiyon: 1.0.0
+ * Versiyon: 2.0.0
  * Tarih: 03.09.2024
  * Web: https://www.jrodix.com
  *
@@ -82,6 +82,7 @@
 	'ExpireMonth'        => $params['expiry_m'],
 	'Cvv'           => $params['cvc'],
         'CardHolderName'   => $params['holder_name'],
+    'CustomerId'  => $params["checkout_id"],
 	'CustomerName'   => $params["clientInfo"]->name . ' ' . $params["clientInfo"]->surname,
 	'ClientIP'   => $ip,
 	'CallbackUrl' =>  $callback_url,
@@ -132,7 +133,7 @@
 
     if ($result && isset($result['succeeded']) && $result['succeeded'] === true) {
         return [
-            'status' => 'redirect',
+            'status' => '3D',
             'output' => "<iframe srcdoc='" . htmlspecialchars($result['data']) . "' width='100%' height='500' frameborder='0'></iframe>",
         ];
     } else {
@@ -144,7 +145,7 @@
 }
 public function callback()
 {
-    $post = $_POST;
+      $post = $_POST;
     $result_code = Filter::init("POST/ResultCode", "string");
     $result_message = Filter::init("POST/ResultMessage", "string");
     $error_messages = [
@@ -180,30 +181,30 @@ public function callback()
             'callback_message' => $error_messages[$result_code],
         ];
     }
-    $customer_id = Filter::init("POST/CustomerId", "string");
-    if (!$customer_id) {
-        $this->error = 'Customer ID not found.';
+    
+    $custom_id      = (int) Filter::init("POST/CustomerId","numbers");
+
+    if(!$custom_id){
+        $this->error = 'Custom id not found.';
         return false;
     }
 
+     $checkout       = $this->get_checkout($custom_id);
 
-    return [
-        'status' => 'error',
-        'message' => $result_message,
-        'callback_message' => 'Bilinmeyen bir hata oluştu.',
+    if(!$checkout)
+    {
+        $this->error = 'Checkout ID unknown';
+        return false;
+    }
+    $this->set_checkout($checkout);
+return [
+        'status'            => 'successful',
+        'callback_message' => 'Ödeme işleminiz başarılı',
+         'paid'                    => [
+            'amount'        => $amount,
+            'currency'      => $this->currency($params['currency']),
+        ],
     ];
-           if( $post['status'] == 'success' ) {
-                return [
-                    'status' => 'successful',
-                    'message' => $post,
-                    'callback_message' => 'Ödeme Tamamlandı',
-                    'paid' => [
-                        'amount' => $amount,
-                        'currency' => $amount,
-                    ],
-                ];
-           }
 }
-
 
     }
