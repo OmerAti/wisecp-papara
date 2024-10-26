@@ -3,7 +3,7 @@
  * Papara - Wisecp Papara Ödeme Yöntemi
  *
  * Yazar: Ömer ATABER - OmerAti JRodix.Com Internet Hizmetleri
- * Versiyon: 2.0.0
+ * Versiyon: 1.5.0
  * Tarih: 03.09.2024
  * Web: https://www.jrodix.com
  *
