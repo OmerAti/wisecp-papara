@@ -2,7 +2,7 @@
     <img src="https://upload.wikimedia.org/wikipedia/commons/d/dd/Papara_Logo.png" alt="Ödeme Sayfası" width="250px" height="83px">
 </div>
 
-# WiseCP İçin Papara Ödeme Modülü
+# WiseCP İçin Papara Ödeme Modülü 3D
 
 Bu modül, Papara Ödeme Ağ Geçidi'ni WiseCP platformuna entegre eder. 
 Kullanıcıların Papara'nın güvenli API'si aracılığıyla ödeme yapmasına olanak tanır. Modül, temel ödeme işlemleri, komisyon hesaplamaları, ve otomatik çağrı geri döndürme gibi özellikler sunar.
