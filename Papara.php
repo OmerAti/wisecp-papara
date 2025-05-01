@@ -14,7 +14,6 @@ class Papara extends PaymentGatewayModule
     {
         $this->name = __CLASS__;
         $this->standard_card = true;
-
         parent::__construct();
     }
 
@@ -101,10 +100,10 @@ class Papara extends PaymentGatewayModule
         curl_setopt($curl, CURLOPT_URL, $api_url);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($curl, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-        curl_setopt($curl, CURLOPT_HTTPHEADER, array(
+        curl_setopt($curl, CURLOPT_HTTPHEADER, [
             'ApiKey: ' . $api_key,
             'Content-Type: application/json',
-        ));
+        ]);
         curl_setopt($curl, CURLOPT_POST, 1);
         curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($fields));
         $result = curl_exec($curl);
@@ -145,7 +144,6 @@ class Papara extends PaymentGatewayModule
 
     public function callback()
     {
-        $post = $_POST;
         $result_code = Filter::init("POST/ResultCode", "string");
         $result_message = Filter::init("POST/ResultMessage", "string");
         $error_messages = [
