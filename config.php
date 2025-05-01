@@ -2,7 +2,7 @@
 return [
     'meta'     => [
         'name'    => 'Papara',
-        'version' => '1.2',
+        'version' => '1.3',
         'logo'    => 'logo.png',
     ],
     'settings' => [
